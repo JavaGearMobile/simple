@@ -1,6 +1,7 @@
 package com.example.tasks.services;
 
 import com.example.tasks.entity.UserEntity;
+import com.example.tasks.enums.EUserError;
 import com.example.tasks.exceptions.UserAlreadyExistsException;
 import com.example.tasks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class UserService {
 
     public UserEntity createUser(UserEntity userEntity) throws UserAlreadyExistsException {
         if (userRepository.findByUsername(userEntity.getUsername()) != null) {
-            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует!");
+            throw new UserAlreadyExistsException(EUserError.UserAlreadyExists.getMessage());
         }
         return userRepository.save(userEntity);
     }

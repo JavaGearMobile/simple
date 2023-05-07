@@ -1,6 +1,7 @@
 package com.example.tasks.controllers;
 
 import com.example.tasks.entity.UserEntity;
+import com.example.tasks.enums.EUserError;
 import com.example.tasks.exceptions.UserAlreadyExistsException;
 import com.example.tasks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,11 @@ public class UserController {
     public ResponseEntity createUser(@RequestBody UserEntity userEntity) {
         try {
             userService.createUser(userEntity);
-            return ResponseEntity.ok("Пользователь успешно создан!");
+            return ResponseEntity.ok(EUserError.UserCreated.getMessage());
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("При создании пользователя произошла ошибка!");
+            return ResponseEntity.badRequest().body(EUserError.UserCreatedWithError.getMessage());
         }
     }
 }
