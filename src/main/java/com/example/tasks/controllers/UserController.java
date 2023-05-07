@@ -1,7 +1,8 @@
 package com.example.tasks.controllers;
 
 import com.example.tasks.entity.UserEntity;
-import com.example.tasks.repository.UserRepository;
+import com.example.tasks.exceptions.UserAlreadyExistsException;
+import com.example.tasks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/all")
     public ResponseEntity getAllUsers() {
@@ -24,12 +25,10 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody UserEntity userEntity) {
         try {
-            if (userRepository.findByUsername(userEntity.getUsername()) != null) {
-                return ResponseEntity.badRequest().body("Пользователь с таким именем уже существует!");
-            } else {
-                userRepository.save(userEntity);
-                return ResponseEntity.ok("Пользователь успешно создан!");
-            }
+            userService.createUser(userEntity);
+            return ResponseEntity.ok("Пользователь успешно создан!");
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("При создании пользователя произошла ошибка!");
         }
