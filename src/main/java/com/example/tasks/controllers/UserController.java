@@ -24,10 +24,14 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody UserEntity userEntity) {
         try {
-            userRepository.save(userEntity);
-            return ResponseEntity.ok("User created");
+            if (userRepository.findByUsername(userEntity.getUsername()) != null) {
+                return ResponseEntity.badRequest().body("Пользователь с таким именем уже существует!");
+            } else {
+                userRepository.save(userEntity);
+                return ResponseEntity.ok("Пользователь успешно создан!");
+            }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
+            return ResponseEntity.badRequest().body("При создании пользователя произошла ошибка!");
         }
     }
 }
