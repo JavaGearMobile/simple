@@ -37,4 +37,16 @@ public class UserController {
             return ResponseEntity.badRequest().body(EUserError.UserCreatedWithError.getMessage());
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity removeUser(@PathVariable Long id) {
+        try {
+            userService.removeUser(id);
+            return ResponseEntity.ok(EUserError.UserRemoved.getMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(EUserError.UserNotFounding.getMessage());
+        }
+    }
 }

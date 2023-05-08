@@ -5,6 +5,7 @@ public enum EUserError {
     UserCreated("Пользователь успешно создан!"),
     UserNotFound("Пользователь с таким идентификатором не найден!"),
     UserNotFounding("Ошибка при поиске пользователя"),
+    UserRemoved("Пользователь успешно удален"),
     UserCreatedWithError("При создании пользователя произошла ошибка!");
 
     private String message;

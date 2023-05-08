@@ -8,6 +8,7 @@ import com.example.tasks.models.UserModel;
 import com.example.tasks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @Service
 public class UserService {
@@ -37,7 +38,18 @@ public class UserService {
         UserEntity findUser = userRepository.findById(id).get();
         if (findUser == null) {
             throw new UserNotFoundException(EUserError.UserNotFound.getMessage());
+        } else {
+            return UserModel.getModel(findUser);
         }
-        return UserModel.getModel(findUser);
+    }
+
+    public Long removeUser(Long id) throws UserNotFoundException {
+        UserEntity findUser = userRepository.findById(id).get();
+        if (findUser == null) {
+            throw new UserNotFoundException(EUserError.UserNotFound.getMessage());
+        } else {
+            userRepository.deleteById(id);
+            return id;
+        }
     }
 }
