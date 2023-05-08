@@ -8,7 +8,6 @@ import com.example.tasks.models.UserModel;
 import com.example.tasks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 @Service
 public class UserService {
